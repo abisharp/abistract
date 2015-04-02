@@ -8,13 +8,26 @@
       document.addEventListener('DOMContentLoaded', function () {
           var $canvas_1 = document.getElementById('canvas-1');
           var abistract1 = new Abistract({
-              canvas: $canvas_1
+              canvas: $canvas_1,
+              bgcolor: 'pink'
           });
+          $canvas_1.addEventListener('click', function () {
+              abistract1.addLine(
+                Math.random() * 300, 
+                Math.random() * 150, 
+                Math.random() * 300, 
+                Math.random() * 150,
+                (['red','green','blue'])[ Math.floor( Math.random() * 3 ) ]
+              );
+              abistract1.renderAll();
+          });
+
       });
   </script>
 </head>
 <body>
   <h1>CheeSynth: Basic Usage</h1>
+  <p>Click the pink rectangle:</p>
   <canvas id="canvas-1"></canvas>
 </body>
 </html>

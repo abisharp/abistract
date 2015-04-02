@@ -3,7 +3,7 @@
 /*! Abistract 0.0.1 //// MIT licence //// github.com/abisharp //// */
 
 (function() {
-  var Abistract, I, VERSION, env, log, toType;
+  var Abistract, I, Line, VERSION, env, log, toType;
 
   I = 'Abistract';
 
@@ -40,11 +40,70 @@
       if (opt == null) {
         opt = {};
       }
+      opt.canvas.style.backgroundColor = opt.bgcolor;
+      this.ctx = opt.canvas.getContext('2d');
+      this.ctx.lineWidth = 5;
+      this.shapes = [];
     }
 
-    Abistract.prototype.xx = function() {};
+    Abistract.prototype.addLine = function(startX, startY, endX, endY, color) {
+      return this.shapes.push(new Line({
+        ctx: this.ctx,
+        startX: startX,
+        startY: startY,
+        endX: endX,
+        endY: endY,
+        color: color
+      }));
+    };
+
+    Abistract.prototype.renderAll = function() {
+      var shape, _i, _len, _ref, _results;
+      _ref = this.shapes;
+      _results = [];
+      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+        shape = _ref[_i];
+        _results.push(shape.render());
+      }
+      return _results;
+    };
 
     return Abistract;
+
+  })();
+
+  Line = (function() {
+    Line.prototype.I = 'Line';
+
+    Line.prototype.toString = function(renderer) {
+      if (renderer) {
+        return renderer.call(this);
+      } else {
+        return "[object " + this.I + "]";
+      }
+    };
+
+    function Line(opt) {
+      if (opt == null) {
+        opt = {};
+      }
+      this.ctx = opt.ctx;
+      this.startX = opt.startX;
+      this.startY = opt.startY;
+      this.endX = opt.endX;
+      this.endY = opt.endY;
+      this.color = opt.color;
+    }
+
+    Line.prototype.render = function() {
+      this.ctx.beginPath();
+      this.ctx.strokeStyle = this.color;
+      this.ctx.moveTo(this.startX, this.startY);
+      this.ctx.lineTo(this.endX, this.endY);
+      return this.ctx.stroke();
+    };
+
+    return Line;
 
   })();
 
